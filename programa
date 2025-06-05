@@ -1,0 +1,10 @@
+<script>
+    var idade = prompt("Digite sua idade: ")
+    if(!(idade > 0 e idade < 150)) {
+    alert("idade inválida. ")
+    } else if(idade < 18){
+        alert ("Você ainda é menor de idade. ")
+    }else{ 
+("Você já é maior de idade. ")
+    }
+    </script>
