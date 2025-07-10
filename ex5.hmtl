@@ -1,0 +1,69 @@
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Rendimentos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            max-width: 600px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input {
+            padding: 5px;
+            width: 100%;
+            max-width: 200px;
+        }
+        button {
+            padding: 8px 16px;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        #output {
+            margin-top: 15px;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Rendimentos</h1>
+    <label>Saldo Inicial (R$): <input type="number" id="saldo" step="0.01" min="0" required></label>
+    <label>Taxa de Rendimento (%): <input type="number" id="taxa" step="0.01" min="0" required></label>
+    <label>Quantidade de Meses: <input type="number" id="meses" step="1" min="1" required></label>
+    <button onclick="calcular()">Calcular</button>
+    <div id="output"></div>
+
+    <script>
+        function calcular() {
+            const saldo = Number(document.getElementById('saldo').value);
+            const taxa = Number(document.getElementById('taxa').value) / 100;
+            const meses = Number(document.getElementById('meses').value);
+            const output = document.getElementById('output');
+
+            if (!saldo || !taxa || !meses) {
+                output.textContent = 'Preencha todos os campos com valores válidos.';
+                return;
+            }
+
+            let saldoAtual = saldo;
+            let resultado = '';
+
+            for (let mes = 1; mes <= meses; mes++) {
+                const rendimento = saldoAtual * taxa;
+                saldoAtual += rendimento;
+                resultado += `Mês ${mes}: Rendimento de R$ ${rendimento.toFixed(2)}, Total: R$ ${saldoAtual.toFixed(2)}\n`;
+            }
+
+            resultado += `Saldo final: R$ ${saldoAtual.toFixed(2)}`;
+            output.textContent = resultado;
+        }
+    </script>
+</body>
+</html>
