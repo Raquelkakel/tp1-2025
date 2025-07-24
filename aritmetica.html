@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Básica</title>
+</head>
+<body>
+
+  <h3>Calculadora</h3>
+
+  <input type="number" id="n1"><br>
+  <input type="number" id="n2"><br><br>
+
+  <button onclick="somar()">+</button>
+  <button onclick="subtrair()">-</button>
+  <button onclick="multiplicar()">*</button>
+  <button onclick="dividir()">/</button>
+  <button onclick="limpar()">Limpar</button>
+
+  <p id="res">Aguardando valores...</p>
+
+  <script>
+    function somar() {
+      var x = document.getElementById('n1').value
+      var y = document.getElementById('n2').value
+      var resultado = x * 1 + y * 1 
+      document.getElementById('res').innerHTML = resultado
+    }
+
+    function subtrair() {
+      var x = document.getElementById('n1').value
+      var y = document.getElementById('n2').value
+      var resultado = x * 1 - y * 1
+      document.getElementById('res').innerHTML = resultado
+    }
+
+    function multiplicar() {
+      var x = document.getElementById('n1').value
+      var y = document.getElementById('n2').value
+      var resultado = x * y 
+      document.getElementById('res').innerHTML = resultado
+    }
+
+    function dividir() {
+      var x = document.getElementById('n1').value
+      var y = document.getElementById('n2').value
+      if (y == 0) {
+        document.getElementById('res').innerHTML = "Erro: divisão por zero"
+      } else {
+        var resultado = x / y
+        document.getElementById('res').innerHTML = resultado
+      }
+    }
+
+    function limpar() {
+      document.getElementById('n1').value = ""
+      document.getElementById('n2').value = ""
+      document.getElementById('res').innerHTML = "Aguardando valores..."
+    }
+  </script>
+
+</body>
+</html>
