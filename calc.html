@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Calc</title>
+  <style>
+    body { font-family: sans-serif; display: flex; justify-content: center; margin-top: 70px; }
+    #calc { width: 200px; }
+    #res { width: 100%; height: 40px; font-size: 20px; text-align: right; margin-bottom: 5px; }
+    button { width: 30%; height: 40px; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div id="calc">
+    <input id="res" disabled>
+ 
+      <button onclick="limpar()">C</button>
+      <button onclick="dig('←')">←</button>
+      <button onclick="op('/')">/</button>
+      <button onclick="op('*')">*</button>
+      <button onclick="op('+')">+</button>
+      <button onclick="op('-')">-</button>
+      <button onclick="dig('7')">7</button>
+      <button onclick="dig('8')">8</button>
+      <button onclick="dig('9')">9</button>
+      <button onclick="dig('4')">4</button>
+      <button onclick="dig('5')">5</button>
+      <button onclick="dig('6')">6</button>
+      <button onclick="dig('1')">1</button>
+      <button onclick="dig('2')">2</button>
+      <button onclick="dig('3')">3</button>
+      <button onclick="dig('0')">0</button>
+      <button onclick="dig('.')">.</button>
+      <button onclick="calc()">=</button>
+   
+  <script>
+    let res = document.getElementById('res');
+    let atual = '', total = null, operador = '';
+
+    function dig(n) {
+      if (n === '←') atual = atual.slice(0, -1);
+      else atual += n;
+      res.value = atual;
+    }
+
+    function op(opr) {
+      if (total === null) total = parseFloat(atual);
+      else calc();
+      operador = opr;
+      atual = '';
+    }
+
+    function calc() {
+      if (!operador || atual === '') return;
+      let n = parseFloat(atual);
+      if (operador === '+') total += n;
+      if (operador === '-') total -= n;
+      if (operador === '*') total *= n;
+      if (operador === '/') total /= n;
+      res.value = total;
+      atual = '';
+      operador = '';
+    }
+
+    function limpar() {
+      atual = ''; total = null; operador = ''; res.value = '';
+    }
+  </script>
+</body>
+</html>
