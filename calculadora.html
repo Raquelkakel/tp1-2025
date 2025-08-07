@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora simples com Objetos</title>
+</head>
+<body>
+
+  <h3>Calculadora simples</h3>
+
+  <input type="number" id="n1" ><br>
+  <input type="number" id="n2" ><br><br>
+
+  <button onclick="realizarOperacao('+')">+</button>
+  <button onclick="realizarOperacao('-')">-</button>
+  <button onclick="realizarOperacao('*')">*</button>
+  <button onclick="realizarOperacao('/')">/</button>
+  <button onclick="limpar()">Limpar</button>
+
+  <p id="res">Aguardando valores...</p>
+
+  <h3>Histórico de Operações</h3>
+  <ol id="historico"></ol>
+
+  <script>
+    var operacoes = []
+
+    function realizarOperacao(operacao) {
+      var x = document.getElementById('n1').value
+      var y = document.getElementById('n2').value
+      var resultado
+
+      x = parseFloat(x)
+      y = parseFloat(y)
+
+      switch (operacao) {
+        case '+':
+          resultado = x + y
+          break
+        case '-':
+          resultado = x - y
+          break
+        case '*':
+          resultado = x * y
+          break
+        case '/':
+          if (y == 0) {
+             resultado = "ERRO: divisão por zero"
+            
+            
+          } else {
+            resultado = x / y
+          }
+          break
+        default:
+          return
+      }
+
+      var operacaoObj = {
+        operando1: x,
+        operando2: y,
+        operacao: operacao,
+        resultado: resultado
+      }
+
+      operacoes.push(operacaoObj)
+
+      document.getElementById('res').innerHTML = `${x} ${operacao} ${y} = ${resultado}`
+
+      exibirHistorico()
+    }
+
+    function exibirHistorico() {
+      var lista = document.getElementById('historico')
+      lista.innerHTML = ""    
+
+      operacoes.forEach(function(operacao) {
+        var listItem = document.createElement("li")
+        listItem.innerHTML = `${operacao.operando1} ${operacao.operacao} ${operacao.operando2} = ${operacao.resultado}`
+        lista.appendChild(listItem)
+      })
+    }
+
+    function limpar() {
+      document.getElementById('n1').value = ""
+      document.getElementById('n2').value = ""
+      document.getElementById('res').innerHTML = "Aguardando valores..."
+    }
+  </script>
+
+</body>
+</html>
