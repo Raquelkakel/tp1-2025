@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora com Histórico</title>
+</head>
+<body>
+
+    <h2>Calculadora</h2>
+
+    <input type="number" id="n1" placeholder="Número 1"><br>
+    <input type="number" id="n2" placeholder="Número 2"><br><br>
+
+    <button onclick="operar('+')">+</button>
+    <button onclick="operar('-')">-</button>
+    <button onclick="operar('*')">*</button>
+    <button onclick="operar('/')">/</button>
+
+    <p id="res">Resultado:</p>
+
+    <h3>Histórico</h3>
+    <div id="historico"></div>
+
+    <script>
+        const DB_NAME = 'CalculadoraDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'Historico';
+
+        let db;
+
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onsuccess = (e) => { db = e.target.result; exibirHistorico(); };
+        request.onupgradeneeded = (e) => {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains(STORE_NAME)) {
+                db.createObjectStore(STORE_NAME, { keyPath: 'id', autoIncrement: true });
+            }
+        };
+
+        function salvarOperacao(texto) {
+            const transaction = db.transaction([STORE_NAME], 'readwrite');
+            transaction.objectStore(STORE_NAME).add({ descricao: texto });
+            transaction.oncomplete = exibirHistorico;
+        }
+
+        function exibirHistorico() {
+            const historicoDiv = document.getElementById('historico');
+            historicoDiv.innerHTML = '';
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            transaction.objectStore(STORE_NAME).openCursor().onsuccess = (e) => {
+                const cursor = e.target.result;
+                if (cursor) {
+                    historicoDiv.innerHTML += `<p>${cursor.value.descricao}</p>`;
+                    cursor.continue();
+                }
+            };
+        }
+
+        function operar(operacao) {
+            const x = Number(document.getElementById('n1').value);
+            const y = Number(document.getElementById('n2').value);
+            let resultado;
+            switch (operacao) {
+                case '+': resultado = x + y; break;
+                case '-': resultado = x - y; break;
+                case '*': resultado = x * y; break;
+                case '/': resultado = y !== 0 ? x / y : 'Erro: Divisão por zero'; break;
+            }
+            document.getElementById('res').textContent = `Resultado: ${resultado}`;
+            salvarOperacao(`${x} ${operacao} ${y} = ${resultado}`);
+        }
+    </script>
+
+</body>
+</html>
